@@ -52,16 +52,22 @@ def checkout(skus):
                      "U": [4, "U"]}
 
     # define the group deal - items in group : [group size, price]
-    group_deal = {"STXYZ": [3, 45]}
+    group_deals = {"STXYZ": [3, 45]}
+
+    # update basket and price using group deals
+    basket, group_deal_price = update_group_deal(basket, group_deals, prices)
+    price = group_deal_price
 
     # update basket
     basket = update_special_deals(basket, special_deals)
 
-    price = get_price_total(basket, prices)
+    price += get_price_total(basket, prices)
     return price
 
 
 def update_group_deal(basket, deal, prices):
+    total_group_price = 0
+
     for group_items, (group_size, group_price) in deal.items():
         # total number of items in basket in group deal
         count_in_basket = 0
@@ -71,15 +77,23 @@ def update_group_deal(basket, deal, prices):
             count_in_basket += basket[item]
             group_member_unit_price[item] = prices[item]["unit_price"][-1]
 
-        # sort the group_member_unit_price by price to favour customer
-        # ie prioritise expensive items as members of group
-        group_member_unit_price = sorted(group_member_unit_price.items(), key=lambda x: x[1])
+        # sort the group_member_unit_price by descending price to favour customer
+        group_member_unit_price = set(sorted(group_member_unit_price.items(), key=lambda x: x[1]))
+
         # number of group deals to apply
         n_deals = count_in_basket // group_size
+        # compute price
+        total_group_price += n_deals * group_price
 
+        # update basket
+        for curr_deal in range(n_deals):
+            curr_size = 0
+            for item in group_member_unit_price:
+                while curr_size < group_size and basket[item] > 0:
+                    basket[item] -= 1
+                    curr_size += 1
 
-
-
+    return basket, total_group_price
 
 
 def update_special_deals(basket, special_deals):
@@ -107,3 +121,4 @@ def get_price_total(basket, prices):
 
     return price
         
+
