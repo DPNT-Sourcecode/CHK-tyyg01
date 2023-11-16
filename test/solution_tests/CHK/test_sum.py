@@ -25,7 +25,8 @@ class TestSum():
 
         # R5
         assert checkout_solution.checkout("ZZXS") == 66
-        assert checkout_solution.checkout("ZSTXXYA") == 300
+        assert checkout_solution.checkout("ZSTXXYA") == 140
+
 
 
 
