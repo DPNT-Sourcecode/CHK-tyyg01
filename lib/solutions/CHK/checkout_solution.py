@@ -65,11 +65,15 @@ def update_group_deal(basket, deal, prices):
     for group_items, (group_size, group_price) in deal.items():
         # total number of items in basket in group deal
         count_in_basket = 0
+        # store the unit prices of items of group deal
         group_member_unit_price = {}
         for item in group_items:
             count_in_basket += basket[item]
             group_member_unit_price[item] = prices[item]["unit_price"][-1]
 
+        # sort the group_member_unit_price by price to favour customer
+        # ie prioritise expensive items as members of group
+        group_member_unit_price = sorted(group_member_unit_price.items(), key=lambda x: x[1])
         # number of group deals to apply
         n_deals = count_in_basket // group_size
 
@@ -103,4 +107,5 @@ def get_price_total(basket, prices):
 
     return price
         
+
 
