@@ -78,7 +78,7 @@ def update_group_deal(basket, deal, prices):
             group_member_unit_price[item] = prices[item]["unit_price"][-1]
 
         # sort the group_member_unit_price by descending price to favour customer
-        group_member_unit_price = dict(sorted(group_member_unit_price.items(), key=lambda x: x[1]))
+        group_member_unit_price = dict(sorted(group_member_unit_price.items(), key=lambda x: x[1], reverse=True))
 
         # number of group deals to apply
         n_deals = count_in_basket // group_size
@@ -121,5 +121,6 @@ def get_price_total(basket, prices):
 
     return price
         
+
 
 

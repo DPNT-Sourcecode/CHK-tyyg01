@@ -26,6 +26,8 @@ class TestSum():
         # R5
         assert checkout_solution.checkout("ZZXS") == 66
         assert checkout_solution.checkout("ZSTXXYA") == 140
+        assert checkout_solution.checkout("SSSZ") == 65
+
 
 
 
