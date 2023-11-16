@@ -12,3 +12,5 @@ class TestSum():
         assert checkout_solution.checkout("EEB") == 80
         assert checkout_solution.checkout("AAAEEBA") == 260
 
+        assert checkout_solution.checkout("FFFFFFF") == 50
+
