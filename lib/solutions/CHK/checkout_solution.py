@@ -26,7 +26,7 @@ def checkout(skus):
               "H": {"deal1": [10, 80], "deal2": [5, 45], "unit_price": [1, 10]},
               "I": {"unit_price": [1, 35]},
               "J": {"unit_price": [1, 60]},
-              "K": {"deal1": [2, 150], "unit_price": [1, 80]},
+              "K": {"deal1": [2, 120], "unit_price": [1, 70]},
               "L": {"unit_price": [1, 90]},
               "M": {"unit_price": [1, 15]},
               "N": {"unit_price": [1, 40]},
@@ -34,14 +34,14 @@ def checkout(skus):
               "P": {"deal1": [5, 200], "unit_price": [1, 50]},
               "Q": {"deal1": [3, 80], "unit_price": [1, 30]},
               "R": {"unit_price": [1, 50]},
-              "S": {"unit_price": [1, 30]},
+              "S": {"unit_price": [1, 20]},
               "T": {"unit_price": [1, 20]},
               "U": {"unit_price": [1, 40]},
               "V": {"deal1": [3, 130], "deal2": [2, 90], "unit_price": [1, 50]},
               "W": {"unit_price": [1, 20]},
-              "X": {"unit_price": [1, 90]},
-              "Y": {"unit_price": [1, 10]},
-              "Z": {"unit_price": [1, 50]}}
+              "X": {"unit_price": [1, 17]},
+              "Y": {"unit_price": [1, 20]},
+              "Z": {"unit_price": [1, 21]}}
 
     # get one free deals
     # deal item: [required number of deal item, free item]
@@ -51,11 +51,31 @@ def checkout(skus):
                      "R": [3, "Q"],
                      "U": [4, "U"]}
 
+    # define the group deal - items in group : [group size, price]
+    group_deal = {"STXYZ": [3, 45]}
+
     # update basket
     basket = update_special_deals(basket, special_deals)
 
     price = get_price_total(basket, prices)
     return price
+
+
+def update_group_deal(basket, deal, prices):
+    for group_items, (group_size, group_price) in deal.items():
+        # total number of items in basket in group deal
+        count_in_basket = 0
+        group_member_unit_price = {}
+        for item in group_items:
+            count_in_basket += basket[item]
+            group_member_unit_price[item] = prices[item]["unit_price"][-1]
+
+        # number of group deals to apply
+        n_deals = count_in_basket // group_size
+
+
+
+
 
 
 def update_special_deals(basket, special_deals):
@@ -83,3 +103,4 @@ def get_price_total(basket, prices):
 
     return price
         
+
