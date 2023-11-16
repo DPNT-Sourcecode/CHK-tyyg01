@@ -16,10 +16,10 @@ def checkout(skus):
 
     # storage of items and prices/deals
     # deals ordered best to worst
-    prices = {"A" : {"3A" : 130, "1A" : 50},
-              "B" : {"2B" : 45,  "1B" : 30},
-              "C" : {"1C" : 20},
-              "D" : {"1D" : 15}}
+    prices = {"A": {"3A": 130, "1A": 50},
+              "B": {"2B": 45,  "1B": 30},
+              "C": {"1C": 20},
+              "D": {"1D": 15}}
 
     price = get_price_total(basket, prices)
     return price
@@ -28,7 +28,7 @@ def checkout(skus):
 def get_price_total(basket, prices):
     price = 0 
     for item in basket:
-        for key, val in prices[item]:
+        for key, val in prices[item].items():
             basket_quant = basket[item]
             deal_quant = int(key[0])
             price += (basket_quant // deal_quant) * val
@@ -38,4 +38,5 @@ def get_price_total(basket, prices):
 
     return price
         
+
 
