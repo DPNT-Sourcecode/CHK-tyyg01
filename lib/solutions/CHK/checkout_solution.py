@@ -16,25 +16,46 @@ def checkout(skus):
 
     # storage of items and prices/deals
     # deals ordered best to worst
-    prices = {"A": {"3A": 130, "1A": 50},
-              "B": {"2B": 45,  "1B": 30},
-              "C": {"1C": 20},
-              "D": {"1D": 15}}
+    prices = {"A": {"deal1": [5, 200], "deal2": [3, 130], "unit_price": [1, 50]},
+              "B": {"deal1": [2, 45], "unit_price": [1, 30]},
+              "C": {"unit_price": [1, 20]},
+              "D": {"unit_price": [1, 15]},
+              "E": {"unit_price": [1, 40]}}
+
+    # get one free deals
+    # deal item: [required number of deal item, free item]
+    special_deals = {"E": [2, "B"]}
+
+    # update basket
+    basket = update_special_deals(basket, special_deals)
 
     price = get_price_total(basket, prices)
     return price
 
 
+def update_special_deals(basket, special_deals):
+    for item in special_deals:
+        deal_quant, deal_item = item
+        basket_quant = basket[item]
+
+        # subtract the number of free items if deal is valid
+        if basket_quant // deal_quant > 0:
+            basket[deal_item] -= (basket_quant // deal_quant)
+            if basket[deal_item] < 0:
+                basket[deal_item] = 0
+    return basket
+
+
 def get_price_total(basket, prices):
     price = 0 
     for item in basket:
-        for key, val in prices[item].items():
+        for deal_quant, deal_price in prices[item].values():
             basket_quant = basket[item]
-            deal_quant = int(key[0])
-            price += (basket_quant // deal_quant) * val
+            price += (basket_quant // deal_quant) * deal_price
 
             # update price in basket
             basket[item] = basket_quant % deal_quant
 
     return price
         
+
