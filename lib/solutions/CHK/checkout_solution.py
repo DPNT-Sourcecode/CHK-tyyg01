@@ -6,7 +6,7 @@ def checkout(skus):
     if len(skus) == 0: return 0
 
     # counter for skus
-    basket = {item: 0 for item in "ABCD"}
+    basket = {item: 0 for item in "ABCDE"}
     for item in skus:
         # illegal input
         if item not in basket:
@@ -35,7 +35,7 @@ def checkout(skus):
 
 def update_special_deals(basket, special_deals):
     for item in special_deals:
-        deal_quant, deal_item = item
+        deal_quant, deal_item = special_deals[item]
         basket_quant = basket[item]
 
         # subtract the number of free items if deal is valid
@@ -58,4 +58,5 @@ def get_price_total(basket, prices):
 
     return price
         
+
 
