@@ -107,5 +107,3 @@ def get_price_total(basket, prices):
 
     return price
         
-
-
